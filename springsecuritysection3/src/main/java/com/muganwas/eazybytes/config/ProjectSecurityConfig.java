@@ -5,6 +5,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -24,16 +26,19 @@ public class ProjectSecurityConfig {
     }
     @Bean
     public InMemoryUserDetailsManager userDetailsManager() {
-        UserDetails admin = User.withDefaultPasswordEncoder()
-                .username("Japheth")
+        UserDetails admin = User.withUsername("Japheth")
                 .password("dev1234.")
                 .authorities("admin")
                 .build();
-        UserDetails user_1 = User.withDefaultPasswordEncoder()
-                .username("Cleo")
+        UserDetails user_1 = User.withUsername("Cleo")
                 .password("dev1234.")
                 .authorities("user")
                 .build();
         return new InMemoryUserDetailsManager(admin, user_1);
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return NoOpPasswordEncoder.getInstance();
     }
 }
